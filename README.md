@@ -1,1 +1,1 @@
-# Teaching Computing to Childern
+# Teaching Computing to Children
