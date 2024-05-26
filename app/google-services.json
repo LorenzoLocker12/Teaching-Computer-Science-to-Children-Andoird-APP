@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "283154814609",
+    "project_id": "appcompcrianca",
+    "storage_bucket": "appcompcrianca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:283154814609:android:b96ce6525e81267e34d130",
+        "android_client_info": {
+          "package_name": "com.unisagrado.appcompcrianca"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtaYiIESVem7OKIf7EhzBwvfRbtnkHu-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

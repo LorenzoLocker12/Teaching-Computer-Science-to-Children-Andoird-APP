@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ppink2"
+    android:gravity="center"
+    android:padding="16dp">
+    <!-- Create a LinearLayout for showing restart and exit ImageButtons -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Create a filler View to push Exit ImageButton to the right. -->
+
+        <ImageButton
+            android:layout_marginTop="20dp"
+            android:id="@+id/retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/restart"
+            android:onClick="restart" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/exit"
+            android:onClick="exit" />
+    </LinearLayout>
+    <!-- Create a filler View -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <!-- Create a LinearLayout for showing points and personal best. -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Pontos Feitos: "
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvPoints"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_green_light"
+                android:textSize="60sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Maior Pontuação: "
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvPersonalBest"
+                android:layout_weight="1"
+                android:textColor="#ff6000"
+                android:textSize="30sp" />
+        </LinearLayout>
+    </LinearLayout>
+    <!-- Let's show the game over image with an ImageView -->
+    <ImageView
+        android:id="@+id/overimg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:srcCompat="@drawable/game_over" />
+    <!-- Create another filler View to show the main content that is the points, personal best
+    and game over graphic in nearly the middle. -->
+    <TextView
+        android:id="@+id/textofim"
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:layout_weight="1"
+        android:text="Maior Pontuação: "
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:gravity="center"/>
+    <Button
+        android:id="@+id/trofeusBtn"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:background="@drawable/button_backgroun"
+        android:text="Trofeus"
+        android:textStyle="bold"
+        android:textSize="40dp"
+        android:visibility="invisible" />
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="64dp"
+        android:layout_weight="1" />
+
+
+</LinearLayout>
+
+
