@@ -14,8 +14,8 @@ public class VideoLinguagens extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_linguagens);
 
-        VideoView videoView = findViewById(R.id.videoView);
-
+//        VideoView videoView = findViewById(R.id.videoView);
+//
 //        // Set the video URI and start playing
 //        String videoPath = "android.resource://" + getPackageName() + "/" + R.raw.video;
 //        Uri uri = Uri.parse(videoPath);
