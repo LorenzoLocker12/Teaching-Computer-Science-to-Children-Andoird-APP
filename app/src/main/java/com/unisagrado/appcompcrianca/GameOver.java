@@ -8,9 +8,18 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class GameOver extends AppCompatActivity {
     TextView tvPoints, tvPersonalBest, textoFim;
@@ -37,6 +46,7 @@ public class GameOver extends AppCompatActivity {
         exit = findViewById(R.id.exit);
         retry = findViewById(R.id.retry);
         trofeuBtn = findViewById(R.id.trofeusBtn);
+        boolean trophyLanguages;
 
         GlobalVariables globalVariables = (GlobalVariables) getApplicationContext();
 
@@ -62,7 +72,8 @@ public class GameOver extends AppCompatActivity {
             exit.setVisibility(View.INVISIBLE);
             retry.setVisibility(View.INVISIBLE);
             trofeuBtn.setVisibility(View.VISIBLE);
-            globalVariables.setLinguagensTrophy(true);
+            trophyLanguages = true;
+            updateData(trophyLanguages);
 
         }
         else{
@@ -95,4 +106,21 @@ public class GameOver extends AppCompatActivity {
         finish();
     }
 
+    private void updateData(boolean trophyLanguages){
+        GlobalVariables globalVariables = (GlobalVariables) getApplicationContext();
+        HashMap trophy = new HashMap();
+        trophy.put("trophyLanguages", trophyLanguages);
+        DatabaseReference databaseReference;
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference.child(globalVariables.getUserName()).updateChildren(trophy).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(GameOver.this, "Parabéns!!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(GameOver.this, "Erro", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 }

@@ -1,5 +1,6 @@
 package com.unisagrado.appcompcrianca;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,6 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Trophy extends AppCompatActivity {
 
@@ -17,20 +24,29 @@ public class Trophy extends AppCompatActivity {
         setContentView(R.layout.trophy);
 
         GlobalVariables globalVariables = (GlobalVariables) getApplicationContext();
+        String userName = globalVariables.getUserName();
 
         ImageView btnLinguagens = findViewById(R.id.linguagensTrophy);
 
         Button btnMenu = findViewById(R.id.btnMenu);
 
-        boolean linguagens = globalVariables.getLinguagensTrophy();
 
+        DatabaseReference databaseReference;
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference.child(userName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                DataSnapshot dataSnapshot = task.getResult();
+                Boolean trophyLanguages = dataSnapshot.child("trophyLanguages").getValue(Boolean.class);
+                if(trophyLanguages){
+                    btnLinguagens.setImageResource(R.drawable.trophy);
+                }
+                else {
+                    btnLinguagens.setImageResource(R.drawable.pontilhado);
+                }
+            }
+        });
 
-        if(linguagens){
-            btnLinguagens.setImageResource(R.drawable.trophy);
-        }
-        else {
-            btnLinguagens.setImageResource(R.drawable.pontilhado);
-        }
 
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,6 +55,8 @@ public class Trophy extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
 
     }
 }

@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.opengl.EGLObjectHandle;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,8 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
         Button btnNavigate = findViewById(R.id.btnJogar);
         Button btnTrophy = findViewById(R.id.btnTrofeus);
-
-
         btnTrophy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

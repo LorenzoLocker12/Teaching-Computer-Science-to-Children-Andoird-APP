@@ -4,21 +4,16 @@ import android.app.Application;
 
 public class GlobalVariables extends Application {
 
-    private static GlobalVariables instance;
-    private static boolean linguagensTrophy = false;
+    private String userName;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        instance = this;
-    }
-    public boolean getLinguagensTrophy() {
-        return linguagensTrophy;
+    public String getUserName(){
+        return userName;
     }
 
-    public void setLinguagensTrophy(boolean linguagensTrophy) {
-        this.linguagensTrophy = linguagensTrophy;
+    public void setUserName(String userName){
+        this.userName = userName;
     }
 
-
+    public GlobalVariables() {
+    }
 }

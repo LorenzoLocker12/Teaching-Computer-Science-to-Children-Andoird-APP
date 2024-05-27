@@ -29,6 +29,7 @@ public class LoginPage extends AppCompatActivity {
     Button loginButton;
     TextView signupRedirectText, forgotPasswordRedirectText;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +46,14 @@ public class LoginPage extends AppCompatActivity {
         loginButton = findViewById(R.id.login_button);
         signupRedirectText = findViewById(R.id.signupRedirectText);
         forgotPasswordRedirectText = findViewById(R.id.forgotPasswordRedirectText);
+        GlobalVariables globalVariables = (GlobalVariables) getApplicationContext();
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String addGlobal = loginUsername.getText().toString();
+                globalVariables.setUserName(addGlobal);
                 if (!validatePassword() || !validateUsername()){
 
                 } else {
@@ -107,9 +111,9 @@ public class LoginPage extends AppCompatActivity {
         String userUsername = loginUsername.getText().toString().trim();
         String userPassword = loginPassword.getText().toString().trim();
 
+
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
         Query checkUserDatabase = reference.orderByChild("username").equalTo(userUsername);
-        Query checkEmailDatabase = reference.orderByChild("email").equalTo(userUsername);
 
         checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

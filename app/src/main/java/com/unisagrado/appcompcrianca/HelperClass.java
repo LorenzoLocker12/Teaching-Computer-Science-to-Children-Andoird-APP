@@ -2,6 +2,8 @@ package com.unisagrado.appcompcrianca;
 
 public class HelperClass {
     String username, email, password;
+
+    boolean trophyLanguages, trophyBinary, trophySystems, trophyVariables;
     public String getUsername() {
         return username;
     }
@@ -22,10 +24,46 @@ public class HelperClass {
     }
 
 
+    public boolean isTrophyLanguages() {
+        return trophyLanguages;
+    }
+
+    public void setTrophyLanguages(boolean trophyLanguages) {
+        this.trophyLanguages = trophyLanguages;
+    }
+
+    public boolean isTrophyBinary() {
+        return trophyBinary;
+    }
+
+    public void setTrophyBinary(boolean trophyBinary) {
+        this.trophyBinary = trophyBinary;
+    }
+
+    public boolean isTrophySystems() {
+        return trophySystems;
+    }
+
+    public void setTrophySystems(boolean trophySystems) {
+        this.trophySystems = trophySystems;
+    }
+
+    public boolean isTrophyVariables() {
+        return trophyVariables;
+    }
+
+    public void setTrophyVariables(boolean trophyVariables) {
+        this.trophyVariables = trophyVariables;
+    }
+
     public HelperClass(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.trophyLanguages = false;
+        this.trophyBinary = false;
+        this.trophySystems = false;
+        this.trophyVariables = false;
     }
     public HelperClass() {
     }
