@@ -27,6 +27,7 @@ public class Trophy extends AppCompatActivity {
         String userName = globalVariables.getUserName();
 
         ImageView btnLinguagens = findViewById(R.id.linguagensTrophy);
+        ImageView imageBinary = findViewById(R.id.binarioTrophy);
 
         Button btnMenu = findViewById(R.id.btnMenu);
 
@@ -37,12 +38,21 @@ public class Trophy extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 DataSnapshot dataSnapshot = task.getResult();
+
                 Boolean trophyLanguages = dataSnapshot.child("trophyLanguages").getValue(Boolean.class);
                 if(trophyLanguages){
                     btnLinguagens.setImageResource(R.drawable.trophy);
                 }
                 else {
                     btnLinguagens.setImageResource(R.drawable.pontilhado);
+                }
+
+                Boolean trophyBinary = dataSnapshot.child("trophyBinary").getValue(Boolean.class);
+                if(trophyBinary){
+                    imageBinary.setImageResource(R.drawable.trophy);
+                }
+                else {
+                    imageBinary.setImageResource(R.drawable.pontilhado);
                 }
             }
         });
