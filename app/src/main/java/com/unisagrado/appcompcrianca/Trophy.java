@@ -11,14 +11,19 @@ import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Trophy extends AppCompatActivity {
 
+    private DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        FirebaseApp.initializeApp(this);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.trophy);
@@ -32,27 +37,34 @@ public class Trophy extends AppCompatActivity {
         Button btnMenu = findViewById(R.id.btnMenu);
 
 
-        DatabaseReference databaseReference;
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         databaseReference.child(userName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                DataSnapshot dataSnapshot = task.getResult();
+                if (task.isSuccessful()) {
+                    DataSnapshot dataSnapshot = task.getResult();
+                    if (dataSnapshot != null) {
+                        Boolean trophyLanguages = dataSnapshot.child("trophyLanguages").getValue(Boolean.class);
+                        if (trophyLanguages != null) {
+                            if(trophyLanguages){
+                                btnLinguagens.setImageResource(R.drawable.trophy);
+                            } else {
+                                btnLinguagens.setImageResource(R.drawable.pontilhado);
+                            }
+                        }
 
-                Boolean trophyLanguages = dataSnapshot.child("trophyLanguages").getValue(Boolean.class);
-                if(trophyLanguages){
-                    btnLinguagens.setImageResource(R.drawable.trophy);
-                }
-                else {
-                    btnLinguagens.setImageResource(R.drawable.pontilhado);
-                }
+                        Boolean trophyBinary = dataSnapshot.child("trophyBinary").getValue(Boolean.class);
+                        if (trophyBinary != null) {
+                            if(trophyBinary){
+                                imageBinary.setImageResource(R.drawable.trophy);
+                            } else {
+                                imageBinary.setImageResource(R.drawable.pontilhado);
+                            }
+                        }
+                    } else {
 
-                Boolean trophyBinary = dataSnapshot.child("trophyBinary").getValue(Boolean.class);
-                if(trophyBinary){
-                    imageBinary.setImageResource(R.drawable.trophy);
-                }
-                else {
-                    imageBinary.setImageResource(R.drawable.pontilhado);
+                    }
+                } else {
                 }
             }
         });
@@ -68,5 +80,9 @@ public class Trophy extends AppCompatActivity {
 
 
 
+    }
+
+    public DatabaseReference getDatabaseReference(){
+        return databaseReference;
     }
 }

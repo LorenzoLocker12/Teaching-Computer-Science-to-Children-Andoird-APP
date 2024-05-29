@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,6 +36,7 @@ import java.util.Random;
 
 public class BinariosGame extends AppCompatActivity {
 
+    public boolean allCorrect;
     TextView number1, number2, number3, number4;
     EditText input1, input2, input3, input4;
     Button evaluateButton, infoBtn;
@@ -55,19 +58,24 @@ public class BinariosGame extends AppCompatActivity {
         mDialog.setContentView(R.layout.binarypopup);
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mDialog.show();
-        number1 = findViewById(R.id.number1);
-        number2 = findViewById(R.id.number2);
-        number3 = findViewById(R.id.number3);
-        number4 = findViewById(R.id.number4);
+        if (findViewById(R.id.number1) != null) {
+            number1 = findViewById(R.id.number1);
+            number2 = findViewById(R.id.number2);
+            number3 = findViewById(R.id.number3);
+            number4 = findViewById(R.id.number4);
 
-        input1 = findViewById(R.id.input1);
-        input2 = findViewById(R.id.input2);
-        input3 = findViewById(R.id.input3);
-        input4 = findViewById(R.id.input4);
+            input1 = findViewById(R.id.input1);
+            input2 = findViewById(R.id.input2);
+            input3 = findViewById(R.id.input3);
+            input4 = findViewById(R.id.input4);
 
-        infoBtn = findViewById(R.id.infoBtn);
-        evaluateButton = findViewById(R.id.evaluateButton);
+            infoBtn = findViewById(R.id.infoBtn);
+            evaluateButton = findViewById(R.id.evaluateButton);
 
+            // Continuar com as inicializações e configurações de listeners
+        } else {
+            Log.e("BinariosGame", "TextViews not found in layout");
+        }
         generateRandomNumbers();
 
         evaluateButton.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +93,7 @@ public class BinariosGame extends AppCompatActivity {
         });
     }
 
-    private void generateRandomNumbers() {
+    public void generateRandomNumbers() {
         Random random = new Random();
         for (int i = 0; i < 4; i++) {
             numbers[i] = random.nextInt(10) + 1;
@@ -97,7 +105,7 @@ public class BinariosGame extends AppCompatActivity {
         number4.setText("Numero: " + String.valueOf(numbers[3]));
     }
 
-    private void evaluateAnswers() {
+    public void evaluateAnswers() {
         String[] userInputs = new String[4];
         userInputs[0] = input1.getText().toString();
         userInputs[1] = input2.getText().toString();
@@ -146,10 +154,12 @@ public class BinariosGame extends AppCompatActivity {
         }
 
         if (allCorrect) {
+            allCorrect = true;
             updateData(true);
             Intent intent = new Intent(BinariosGame.this, Trophy.class);
             startActivity(intent);
         } else {
+            allCorrect = false;
             Toast.makeText(this, "Algumas respostas estão incorretas. Verifique os campos destacados.", Toast.LENGTH_SHORT).show();
         }
     }
