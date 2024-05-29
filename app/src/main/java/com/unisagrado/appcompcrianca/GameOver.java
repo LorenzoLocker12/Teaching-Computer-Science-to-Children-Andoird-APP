@@ -106,6 +106,14 @@ public class GameOver extends AppCompatActivity {
         finish();
     }
 
+    public void exit(View view) {
+        // Define what should happen when the exit button is clicked
+        // For example, you can navigate to another activity or close the app
+        Intent intent = new Intent(GameOver.this, MainActivity.class);
+        startActivity(intent);
+        finish(); // Optional: Close the current activity
+    }
+
     private void updateData(boolean trophyLanguages){
         GlobalVariables globalVariables = (GlobalVariables) getApplicationContext();
         HashMap trophy = new HashMap();
