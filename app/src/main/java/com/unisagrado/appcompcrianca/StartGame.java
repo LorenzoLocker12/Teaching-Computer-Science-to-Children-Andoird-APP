@@ -44,6 +44,8 @@ public class StartGame extends AppCompatActivity {
         btn3 = findViewById(R.id.btn3);
         btn4 = findViewById(R.id.btn4);
         tvPoints = findViewById(R.id.tvPoints);
+
+
         index = 0;
         techList.add("C");
         techList.add("Csharp");

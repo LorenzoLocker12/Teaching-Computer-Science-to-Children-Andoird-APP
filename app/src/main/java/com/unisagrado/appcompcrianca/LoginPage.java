@@ -128,7 +128,9 @@ public class LoginPage extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else {
-                        loginPassword.setError("Senha Inválida");
+                        loginUsername.setError("Usúario ou senha inválidos");
+                        loginUsername.requestFocus();
+                        loginPassword.setError("Usúario ou senha inválidos");
                         loginPassword.requestFocus();
                     }
                 }

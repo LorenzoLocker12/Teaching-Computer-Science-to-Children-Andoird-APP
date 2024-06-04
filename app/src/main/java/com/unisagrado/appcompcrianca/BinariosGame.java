@@ -99,6 +99,7 @@ public class BinariosGame extends AppCompatActivity {
             numbers[i] = random.nextInt(10) + 1;
         }
 
+
         number1.setText("Numero: " + String.valueOf(numbers[0]));
         number2.setText("Numero: " + String.valueOf(numbers[1]));
         number3.setText("Numero: " + String.valueOf(numbers[2]));

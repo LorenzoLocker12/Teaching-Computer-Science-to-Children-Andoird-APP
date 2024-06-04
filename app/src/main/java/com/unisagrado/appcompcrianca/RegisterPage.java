@@ -46,6 +46,7 @@ public class RegisterPage extends AppCompatActivity {
                     HelperClass helperClass = new HelperClass(username, email, password);
                     reference.child(username).setValue(helperClass);
 
+
                     Toast.makeText(RegisterPage.this, "Conta criada com sucesso!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegisterPage.this, LoginPage.class);
                     startActivity(intent);

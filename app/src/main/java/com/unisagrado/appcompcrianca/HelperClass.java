@@ -3,7 +3,16 @@ package com.unisagrado.appcompcrianca;
 public class HelperClass {
     String username, email, password;
 
-    boolean trophyLanguages, trophyBinary, trophySystems, trophyVariables;
+    boolean trophyLanguages, trophyBinary, trophySystems, trophyVariables, xerequinha;
+
+    public boolean isXerequinha() {
+        return xerequinha;
+    }
+
+    public void setXerequinha(boolean xerequinha) {
+        this.xerequinha = xerequinha;
+    }
+
     public String getUsername() {
         return username;
     }
