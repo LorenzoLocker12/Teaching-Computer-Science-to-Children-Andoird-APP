@@ -96,7 +96,7 @@ public class BinariosGame extends AppCompatActivity {
     public void generateRandomNumbers() {
         Random random = new Random();
         for (int i = 0; i < 4; i++) {
-            numbers[i] = random.nextInt(10) + 1;
+            numbers[i] = random.nextInt(100) + 1;
         }
 
 
