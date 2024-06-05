@@ -15,7 +15,7 @@
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="-139dp" />
     <ImageView
-        android:layout_width="193dp"
+        android:layout_width="194dp"
         android:layout_height="118dp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="28dp"
