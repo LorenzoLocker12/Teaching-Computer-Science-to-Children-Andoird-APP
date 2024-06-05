@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -83,8 +84,8 @@ public class RegisterPage extends AppCompatActivity {
     }
     public Boolean validateEmail(){
         String val = signupEmail.getText().toString();
-        if(val.isEmpty()){
-            signupEmail.setError("O campo Email não pode estar vazio");
+        if(val.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(val).matches()){
+            signupEmail.setError("Email inválido");
             return false;
         }
         else{
@@ -118,4 +119,5 @@ public class RegisterPage extends AppCompatActivity {
         }
 
     }
+
 }
