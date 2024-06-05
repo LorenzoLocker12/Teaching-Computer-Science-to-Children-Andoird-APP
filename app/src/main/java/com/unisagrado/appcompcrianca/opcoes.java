@@ -92,6 +92,7 @@ public class opcoes extends AppCompatActivity {
         alertDialog.show();
     }
 
+
     public void updateDataa(boolean trophyLanguages,boolean trophyBinary, boolean trophySystems, boolean trophyVariables){
         GlobalVariables globalVariables = (GlobalVariables) getApplicationContext();
         HashMap trophy = new HashMap();

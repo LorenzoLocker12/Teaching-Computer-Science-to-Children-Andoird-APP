@@ -45,6 +45,7 @@ public class Trophy extends AppCompatActivity {
                     DataSnapshot dataSnapshot = task.getResult();
                     if (dataSnapshot != null) {
                         Boolean trophyLanguages = dataSnapshot.child("trophyLanguages").getValue(Boolean.class);
+
                         if (trophyLanguages != null) {
                             if(trophyLanguages){
                                 btnLinguagens.setImageResource(R.drawable.trophy);

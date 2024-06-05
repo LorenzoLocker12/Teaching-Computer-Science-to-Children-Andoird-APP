@@ -50,7 +50,7 @@ public class RegisterPage extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
-                                signupUsername.setError("O Usuário já existe");
+
                             } else {
                                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
                                 HelperClass helperClass = new HelperClass(username, email, password);
