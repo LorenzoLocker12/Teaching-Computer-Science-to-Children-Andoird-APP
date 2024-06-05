@@ -1,5 +1,6 @@
 package com.unisagrado.appcompcrianca;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,8 +11,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class RegisterPage extends AppCompatActivity {
 
@@ -36,22 +40,33 @@ public class RegisterPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (validateUsername() && validateEmail() && validatePassword()){
-                    database = FirebaseDatabase.getInstance();
-                    reference = database.getReference("users");
+                    final String email = signupEmail.getText().toString();
+                    final String username = signupUsername.getText().toString();
+                    final String password = signupPassword.getText().toString();
 
-                    String email = signupEmail.getText().toString();
-                    String username = signupUsername.getText().toString();
-                    String password = signupPassword.getText().toString();
+                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(username);
+                    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                signupUsername.setError("O Usuário já existe");
+                            } else {
+                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
+                                HelperClass helperClass = new HelperClass(username, email, password);
+                                reference.child(username).setValue(helperClass);
 
-                    HelperClass helperClass = new HelperClass(username, email, password);
-                    reference.child(username).setValue(helperClass);
+                                Toast.makeText(RegisterPage.this, "Conta criada com sucesso!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(RegisterPage.this, LoginPage.class);
+                                startActivity(intent);
+                            }
+                        }
 
-
-                    Toast.makeText(RegisterPage.this, "Conta criada com sucesso!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(RegisterPage.this, LoginPage.class);
-                    startActivity(intent);
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Toast.makeText(RegisterPage.this, "Erro ao verificar usuário", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
-
             }
         });
 
@@ -94,7 +109,7 @@ public class RegisterPage extends AppCompatActivity {
     public Boolean validateUsername(){
         String val = signupUsername.getText().toString();
         if(val.isEmpty()){
-            signupUsername.setError("O campo Senha não pode estar vazio");
+            signupUsername.setError("O campo Usuário não pode estar vazio");
             return false;
         }
         else{
