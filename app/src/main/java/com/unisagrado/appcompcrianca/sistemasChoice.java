@@ -19,7 +19,7 @@ public class sistemasChoice extends AppCompatActivity {
         sistemassBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(sistemasChoice.this, sistemasChoice.class);
+                Intent intent = new Intent(sistemasChoice.this, HardSoftGameStart.class);
                 startActivity(intent);
             }
         });

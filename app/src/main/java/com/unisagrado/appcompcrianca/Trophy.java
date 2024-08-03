@@ -33,6 +33,7 @@ public class Trophy extends AppCompatActivity {
 
         ImageView btnLinguagens = findViewById(R.id.linguagensTrophy);
         ImageView imageBinary = findViewById(R.id.binarioTrophy);
+        ImageView imageSystems = findViewById(R.id.sistemasTrophy);
 
         Button btnMenu = findViewById(R.id.btnMenu);
 
@@ -60,6 +61,15 @@ public class Trophy extends AppCompatActivity {
                                 imageBinary.setImageResource(R.drawable.trophy);
                             } else {
                                 imageBinary.setImageResource(R.drawable.pontilhado);
+                            }
+                        }
+
+                        Boolean trophySystems = dataSnapshot.child("trophySystems").getValue(Boolean.class);
+                        if (trophySystems != null) {
+                            if(trophySystems){
+                                imageSystems.setImageResource(R.drawable.trophy);
+                            } else {
+                                imageSystems.setImageResource(R.drawable.pontilhado);
                             }
                         }
                     } else {
