@@ -14,6 +14,9 @@
         android:theme="@style/Theme.AppCompCrianca"
         tools:targetApi="31">
         <activity
+            android:name=".HardSoftVideo"
+            android:exported="false" />
+        <activity
             android:name=".ArqVideo"
             android:exported="false" />
         <activity
