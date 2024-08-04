@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".VarGameStart">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="16dp">
+
+
+
+        <!-- Create a horizontal LinearLayout to display timer and points related stuff -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/star" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mScoreView"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="0/9"
+                    android:textSize="24sp" />
+            </LinearLayout>
+        </LinearLayout>
+        <!-- Create a vertical LinearLayout to hold the main content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <!-- Create a TextView to show the Question. -->
+            <TextView
+                android:id="@+id/mQuestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="70dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="A imagem é um hardware ou um software?"
+                android:textSize="24sp"
+                />
+            <!-- Create a vertical LinearLayout to show the image for Technology
+            that is in question, four buttons to display four options, a TextView
+            for showing the result of any user selection, right or wrong and a Button
+            to proceed to the next question.
+            -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mImageView"
+                    tools:srcCompat="@drawable/android"
+                    android:layout_marginBottom="100dp"/>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                >
+
+                <Button
+                    android:id="@+id/mTrueButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#88D66C"
+                    android:onClick="answerSelected"
+                    android:text="Verdadeiro"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    app:backgroundTint="@null"
+                    android:layout_margin="5dp"
+                    app:cornerRadius = "20dp"/>
+
+                <Button
+                    android:id="@+id/mFalseButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#F5004F"
+                    android:onClick="answerSelected"
+                    android:text="Falso"
+                    android:textSize="25sp"
+                    android:textColor="@android:color/white"
+                    app:backgroundTint="@null"
+                    android:layout_margin="5dp"
+                    app:cornerRadius = "20dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

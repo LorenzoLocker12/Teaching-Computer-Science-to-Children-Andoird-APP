@@ -31,6 +31,7 @@ public class Trophy extends AppCompatActivity {
         GlobalVariables globalVariables = (GlobalVariables) getApplicationContext();
         String userName = globalVariables.getUserName();
 
+        ImageView imageVariables = findViewById(R.id.variaveisTrophy);
         ImageView btnLinguagens = findViewById(R.id.linguagensTrophy);
         ImageView imageBinary = findViewById(R.id.binarioTrophy);
         ImageView imageSystems = findViewById(R.id.sistemasTrophy);
@@ -61,6 +62,15 @@ public class Trophy extends AppCompatActivity {
                                 imageBinary.setImageResource(R.drawable.trophy);
                             } else {
                                 imageBinary.setImageResource(R.drawable.pontilhado);
+                            }
+                        }
+
+                        Boolean trophyVar= dataSnapshot.child("trophyVariables").getValue(Boolean.class);
+                        if (trophyVar != null) {
+                            if(trophyVar){
+                                imageVariables.setImageResource(R.drawable.trophy);
+                            } else {
+                                imageVariables.setImageResource(R.drawable.pontilhado);
                             }
                         }
 

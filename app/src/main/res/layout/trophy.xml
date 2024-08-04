@@ -59,7 +59,7 @@
         android:layout_width="102dp"
         android:layout_height="39dp"
         android:gravity="center"
-        android:text="Variáveis"
+        android:text="Arquitetura"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/prateleira2"

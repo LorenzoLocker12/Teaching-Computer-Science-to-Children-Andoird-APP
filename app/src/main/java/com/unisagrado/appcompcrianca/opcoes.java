@@ -28,8 +28,18 @@ public class opcoes extends AppCompatActivity {
 
         RelativeLayout sistemassBtn = findViewById(R.id.sistemasBtn);
         RelativeLayout linguagensBtn = findViewById(R.id.linguagensBtn);
+        RelativeLayout variaveisBtn = findViewById(R.id.variaveisBtn);
         RelativeLayout binarioBtn = findViewById(R.id.binarioBtn);
         Button btnReset = findViewById(R.id.btnReset);
+
+
+        variaveisBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(opcoes.this, VariaveisChoice.class);
+                startActivity(i);
+            }
+        });
 
         binarioBtn.setOnClickListener(new View.OnClickListener() {
             @Override
