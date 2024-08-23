@@ -25,12 +25,21 @@ public class BInariosChoice extends AppCompatActivity {
             return insets;
         });
         RelativeLayout btnJogar = findViewById(R.id.jogarBtn);
+        RelativeLayout btnAprender = findViewById(R.id.aprender);
 
 
         btnJogar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BInariosChoice.this, BinariosGame.class);
+                startActivity(intent);
+            }
+        });
+
+        btnAprender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BInariosChoice.this, binVideo.class);
                 startActivity(intent);
             }
         });

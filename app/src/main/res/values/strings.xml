@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">AppCompCrianca</string>
     <string name="title_activity_hard_soft_game_start">HardSoftGameStart</string>
+    <string name="title_activity_main2">MainActivity2</string>
 </resources>

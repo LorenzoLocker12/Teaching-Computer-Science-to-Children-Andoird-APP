@@ -5,6 +5,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -13,40 +19,31 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
 
 public class BinariosGame extends AppCompatActivity {
 
-    public boolean allCorrect;
-    TextView number1, number2, number3, number4;
-    EditText input1, input2, input3, input4;
-    Button evaluateButton, infoBtn;
+    private boolean allCorrect;
+    private TextView number1, number2, number3, number4;
+    private EditText input1, input2, input3, input4;
+    private Button evaluateButton, infoBtn;
 
-    Dialog mDialog;
-    int[] numbers = new int[4];
+    private Dialog mDialog;
+    private int[] numbers = new int[4];
+    private GlobalVariables globalVariables;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initialize edge-to-edge and set content view
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_binarios_game);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -54,30 +51,45 @@ public class BinariosGame extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Initialize GlobalVariables
+        globalVariables = (GlobalVariables) getApplicationContext();
+
+        // Initialize UI elements
+        initializeUI();
+
+        // Set up dialog
+        setupDialog();
+
+        // Generate random numbers for the game
+        generateRandomNumbers();
+
+        // Set listeners
+        setListeners();
+    }
+
+    private void initializeUI() {
+        number1 = findViewById(R.id.number1);
+        number2 = findViewById(R.id.number2);
+        number3 = findViewById(R.id.number3);
+        number4 = findViewById(R.id.number4);
+
+        input1 = findViewById(R.id.input1);
+        input2 = findViewById(R.id.input2);
+        input3 = findViewById(R.id.input3);
+        input4 = findViewById(R.id.input4);
+
+        infoBtn = findViewById(R.id.infoBtn);
+        evaluateButton = findViewById(R.id.evaluateButton);
+    }
+
+    private void setupDialog() {
         mDialog = new Dialog(this);
         mDialog.setContentView(R.layout.binarypopup);
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        mDialog.show();
-        if (findViewById(R.id.number1) != null) {
-            number1 = findViewById(R.id.number1);
-            number2 = findViewById(R.id.number2);
-            number3 = findViewById(R.id.number3);
-            number4 = findViewById(R.id.number4);
+    }
 
-            input1 = findViewById(R.id.input1);
-            input2 = findViewById(R.id.input2);
-            input3 = findViewById(R.id.input3);
-            input4 = findViewById(R.id.input4);
-
-            infoBtn = findViewById(R.id.infoBtn);
-            evaluateButton = findViewById(R.id.evaluateButton);
-
-            // Continuar com as inicializações e configurações de listeners
-        } else {
-            Log.e("BinariosGame", "TextViews not found in layout");
-        }
-        generateRandomNumbers();
-
+    private void setListeners() {
         evaluateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,87 +105,112 @@ public class BinariosGame extends AppCompatActivity {
         });
     }
 
-    public void generateRandomNumbers() {
+    private void generateRandomNumbers() {
         Random random = new Random();
+        HashSet<Integer> generatedNumbers = new HashSet<>();
+
         for (int i = 0; i < 4; i++) {
-            numbers[i] = random.nextInt(100) + 1;
+            int number;
+            do {
+                number = random.nextInt(11);
+            } while (generatedNumbers.contains(number));
+
+            generatedNumbers.add(number);
+            numbers[i] = number;
         }
 
-
-        number1.setText("Numero: " + String.valueOf(numbers[0]));
-        number2.setText("Numero: " + String.valueOf(numbers[1]));
-        number3.setText("Numero: " + String.valueOf(numbers[2]));
-        number4.setText("Numero: " + String.valueOf(numbers[3]));
+        number1.setText("Número: " + numbers[0]);
+        number2.setText("Número: " + numbers[1]);
+        number3.setText("Número: " + numbers[2]);
+        number4.setText("Número: " + numbers[3]);
     }
 
-    public void evaluateAnswers() {
+    private void evaluateAnswers() {
         String[] userInputs = new String[4];
         userInputs[0] = input1.getText().toString();
         userInputs[1] = input2.getText().toString();
         userInputs[2] = input3.getText().toString();
         userInputs[3] = input4.getText().toString();
 
-        boolean allCorrect = true;
+        allCorrect = true;
 
         for (int i = 0; i < 4; i++) {
             if (!userInputs[i].equals(Integer.toBinaryString(numbers[i]))) {
                 allCorrect = false;
-                switch (i) {
-                    case 0:
-                        input1.setError("Número Binário incorreto");
-                        input1.requestFocus();
-                        break;
-                    case 1:
-                        input2.setError("Número Binário incorreto");
-                        input2.requestFocus();
-                        break;
-                    case 2:
-                        input3.setError("Número Binário incorreto");
-                        input3.requestFocus();
-                        break;
-                    case 3:
-                        input4.setError("Número Binário incorreto");
-                        input4.requestFocus();
-                        break;
-                }
+                setErrorForInput(i);
             } else {
-                switch (i) {
-                    case 0:
-                        input1.setError(null);
-                        break;
-                    case 1:
-                        input2.setError(null);
-                        break;
-                    case 2:
-                        input3.setError(null);
-                        break;
-                    case 3:
-                        input4.setError(null);
-                        break;
-                }
+                clearErrorForInput(i);
             }
         }
 
         if (allCorrect) {
-            allCorrect = true;
             updateData(true);
+            globalVariables.settBin(true);
             Intent intent = new Intent(BinariosGame.this, Trophy.class);
             startActivity(intent);
         } else {
-            allCorrect = false;
             Toast.makeText(this, "Algumas respostas estão incorretas. Verifique os campos destacados.", Toast.LENGTH_SHORT).show();
         }
     }
-    private void updateData(boolean trophyLanguages){
-        GlobalVariables globalVariables = (GlobalVariables) getApplicationContext();
-        HashMap trophy = new HashMap();
-        trophy.put("trophyBinary", trophyLanguages);
-        DatabaseReference databaseReference;
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        databaseReference.child(globalVariables.getUserName()).updateChildren(trophy).addOnCompleteListener(new OnCompleteListener() {
+
+    private void setErrorForInput(int index) {
+        switch (index) {
+            case 0:
+                input1.setError("Número Binário incorreto");
+                input1.requestFocus();
+                break;
+            case 1:
+                input2.setError("Número Binário incorreto");
+                input2.requestFocus();
+                break;
+            case 2:
+                input3.setError("Número Binário incorreto");
+                input3.requestFocus();
+                break;
+            case 3:
+                input4.setError("Número Binário incorreto");
+                input4.requestFocus();
+                break;
+        }
+    }
+
+    private void clearErrorForInput(int index) {
+        switch (index) {
+            case 0:
+                input1.setError(null);
+                break;
+            case 1:
+                input2.setError(null);
+                break;
+            case 2:
+                input3.setError(null);
+                break;
+            case 3:
+                input4.setError(null);
+                break;
+        }
+    }
+
+    private void updateData(boolean trophyBinary) {
+        String userName = globalVariables.getUserName();
+
+        // Check if userName is null or empty
+        if (userName == null || userName.isEmpty()) {
+            Toast.makeText(this, "Erro: Nome de usuário não encontrado.", Toast.LENGTH_SHORT).show();
+            Log.e("BinariosGame", "userName is null or empty.");
+            return; // Stop further execution if userName is null or empty
+        }
+
+        Log.d("BinariosGame", "userName: " + userName);
+
+        HashMap<String, Object> trophy = new HashMap<>();
+        trophy.put("trophyBinary", trophyBinary);
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference.child(userName).updateChildren(trophy).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task task) {
-                if (task.isSuccessful()){
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
                     Toast.makeText(BinariosGame.this, "Parabéns!!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(BinariosGame.this, "Erro", Toast.LENGTH_SHORT).show();

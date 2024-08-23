@@ -1,6 +1,10 @@
 package com.unisagrado.appcompcrianca;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,8 +30,10 @@ import java.util.Objects;
 public class LoginPage extends AppCompatActivity {
 
     EditText loginUsername, loginPassword;
-    Button loginButton;
+    Button loginButton, userLogin;
     TextView signupRedirectText, forgotPasswordRedirectText;
+
+    Dialog mDialog;
 
 
     @Override
@@ -44,16 +50,38 @@ public class LoginPage extends AppCompatActivity {
         loginUsername = findViewById(R.id.login_username);
         loginPassword = findViewById(R.id.login_password);
         loginButton = findViewById(R.id.login_button);
+        userLogin = findViewById(R.id.login_user_button);
         signupRedirectText = findViewById(R.id.signupRedirectText);
         forgotPasswordRedirectText = findViewById(R.id.forgotPasswordRedirectText);
         GlobalVariables globalVariables = (GlobalVariables) getApplicationContext();
 
+        mDialog = new Dialog(this);
+        mDialog.setContentView(R.layout.userlogin);
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+        userLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.setCancelable(true);
+                mDialog.show();
+
+                mDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        Intent intent = new Intent(LoginPage.this, MainActivity.class);
+                        startActivity(intent);
+
+                        finish();
+                    }
+                });
+            }
+        });
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String addGlobal = loginUsername.getText().toString();
                 globalVariables.setUserName(addGlobal);
+                globalVariables.setUserLoggedIn(true);
                 if (!validatePassword() || !validateUsername()){
 
                 } else {

@@ -19,16 +19,18 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Trophy extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
+    private GlobalVariables globalVariables;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        FirebaseApp.initializeApp(this);
         super.onCreate(savedInstanceState);
 
+        FirebaseApp.initializeApp(this);
         setContentView(R.layout.trophy);
 
-        GlobalVariables globalVariables = (GlobalVariables) getApplicationContext();
+        // Initialize the GlobalVariables application instance
+        globalVariables = (GlobalVariables) getApplicationContext();
+
         String userName = globalVariables.getUserName();
 
         ImageView imageVariables = findViewById(R.id.variaveisTrophy);
@@ -38,58 +40,64 @@ public class Trophy extends AppCompatActivity {
 
         Button btnMenu = findViewById(R.id.btnMenu);
 
+        // Check if the user is logged in
+        if (globalVariables.isUserLoggedIn()) {
+            // User is logged in, use Firebase
+            databaseReference = FirebaseDatabase.getInstance().getReference("users");
+            databaseReference.child(userName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DataSnapshot dataSnapshot = task.getResult();
+                        if (dataSnapshot != null) {
+                            Boolean trophyLanguages = dataSnapshot.child("trophyLanguages").getValue(Boolean.class);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        databaseReference.child(userName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DataSnapshot dataSnapshot = task.getResult();
-                    if (dataSnapshot != null) {
-                        Boolean trophyLanguages = dataSnapshot.child("trophyLanguages").getValue(Boolean.class);
-
-                        if (trophyLanguages != null) {
-                            if(trophyLanguages){
-                                btnLinguagens.setImageResource(R.drawable.trophy);
-                            } else {
-                                btnLinguagens.setImageResource(R.drawable.pontilhado);
+                            if (trophyLanguages != null) {
+                                if (trophyLanguages) {
+                                    btnLinguagens.setImageResource(R.drawable.trophy);
+                                } else {
+                                    btnLinguagens.setImageResource(R.drawable.pontilhado);
+                                }
                             }
-                        }
 
-                        Boolean trophyBinary = dataSnapshot.child("trophyBinary").getValue(Boolean.class);
-                        if (trophyBinary != null) {
-                            if(trophyBinary){
-                                imageBinary.setImageResource(R.drawable.trophy);
-                            } else {
-                                imageBinary.setImageResource(R.drawable.pontilhado);
+                            Boolean trophyBinary = dataSnapshot.child("trophyBinary").getValue(Boolean.class);
+                            if (trophyBinary != null) {
+                                if (trophyBinary) {
+                                    imageBinary.setImageResource(R.drawable.trophy);
+                                } else {
+                                    imageBinary.setImageResource(R.drawable.pontilhado);
+                                }
                             }
-                        }
 
-                        Boolean trophyVar= dataSnapshot.child("trophyVariables").getValue(Boolean.class);
-                        if (trophyVar != null) {
-                            if(trophyVar){
-                                imageVariables.setImageResource(R.drawable.trophy);
-                            } else {
-                                imageVariables.setImageResource(R.drawable.pontilhado);
+                            Boolean trophyVar = dataSnapshot.child("trophyVariables").getValue(Boolean.class);
+                            if (trophyVar != null) {
+                                if (trophyVar) {
+                                    imageVariables.setImageResource(R.drawable.trophy);
+                                } else {
+                                    imageVariables.setImageResource(R.drawable.pontilhado);
+                                }
                             }
-                        }
 
-                        Boolean trophySystems = dataSnapshot.child("trophySystems").getValue(Boolean.class);
-                        if (trophySystems != null) {
-                            if(trophySystems){
-                                imageSystems.setImageResource(R.drawable.trophy);
-                            } else {
-                                imageSystems.setImageResource(R.drawable.pontilhado);
+                            Boolean trophySystems = dataSnapshot.child("trophySystems").getValue(Boolean.class);
+                            if (trophySystems != null) {
+                                if (trophySystems) {
+                                    imageSystems.setImageResource(R.drawable.trophy);
+                                } else {
+                                    imageSystems.setImageResource(R.drawable.pontilhado);
+                                }
                             }
+                        } else {
+                            useOfflineData();
                         }
                     } else {
-
+                        useOfflineData();
                     }
-                } else {
                 }
-            }
-        });
-
+            });
+        } else {
+            // User is not logged in, use the offline data
+            useOfflineData();
+        }
 
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,12 +106,36 @@ public class Trophy extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
     }
 
-    public DatabaseReference getDatabaseReference(){
-        return databaseReference;
+    private void useOfflineData() {
+        ImageView imageVariables = findViewById(R.id.variaveisTrophy);
+        ImageView btnLinguagens = findViewById(R.id.linguagensTrophy);
+        ImageView imageBinary = findViewById(R.id.binarioTrophy);
+        ImageView imageSystems = findViewById(R.id.sistemasTrophy);
+
+        if (globalVariables.istLing()) {
+            btnLinguagens.setImageResource(R.drawable.trophy);
+        } else {
+            btnLinguagens.setImageResource(R.drawable.pontilhado);
+        }
+
+        if (globalVariables.istBin()) {
+            imageBinary.setImageResource(R.drawable.trophy);
+        } else {
+            imageBinary.setImageResource(R.drawable.pontilhado);
+        }
+
+        if (globalVariables.istArq()) {
+            imageVariables.setImageResource(R.drawable.trophy);
+        } else {
+            imageVariables.setImageResource(R.drawable.pontilhado);
+        }
+
+        if (globalVariables.istSis()) {
+            imageSystems.setImageResource(R.drawable.trophy);
+        } else {
+            imageSystems.setImageResource(R.drawable.pontilhado);
+        }
     }
 }

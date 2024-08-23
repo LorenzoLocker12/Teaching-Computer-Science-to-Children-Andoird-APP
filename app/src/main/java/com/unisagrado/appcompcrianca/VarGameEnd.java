@@ -1,7 +1,6 @@
 package com.unisagrado.appcompcrianca;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,13 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,48 +22,44 @@ import java.util.HashMap;
 
 public class VarGameEnd extends AppCompatActivity {
 
-    TextView tvPoints, textoFim;
-
-    ImageView overimg;
-
-    ImageButton exit, retry;
-
-    Button trofeuBtn;
-
-
+    private TextView tvPoints, textoFim;
+    private ImageView overimg;
+    private ImageButton exit, retry;
+    private Button trofeuBtn;
+    private GlobalVariables globalVariables;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hard_soft_game_end);
-        int points = getIntent().getExtras().getInt("pontos");
+
+        globalVariables = (GlobalVariables) getApplicationContext();
+
         tvPoints = findViewById(R.id.tvPoints);
         textoFim = findViewById(R.id.textofim);
         overimg = findViewById(R.id.overimg);
         exit = findViewById(R.id.exit);
         retry = findViewById(R.id.retry);
         trofeuBtn = findViewById(R.id.trofeusBtn);
-        boolean trophyLanguages;
 
-        GlobalVariables globalVariables = (GlobalVariables) getApplicationContext();
+        int points = getIntent().getExtras().getInt("pontos");
+        tvPoints.setText(String.valueOf(points));
 
         exit.setVisibility(View.VISIBLE);
         retry.setVisibility(View.VISIBLE);
 
-        tvPoints.setText("" + points);
+        boolean trophyLanguages;
 
-
-        if(points == 6){
+        if (points == 6) {
             overimg.setImageResource(R.drawable.trophy);
             textoFim.setText("Parabéns, você acertou tudo!");
             exit.setVisibility(View.INVISIBLE);
             retry.setVisibility(View.INVISIBLE);
             trofeuBtn.setVisibility(View.VISIBLE);
             trophyLanguages = true;
+            globalVariables.settArq(true);
             updateData(trophyLanguages);
-
-        }
-        else{
+        } else {
             overimg.setImageResource(R.drawable.game_over);
             textoFim.setText("Tente novamente!");
         }
@@ -91,31 +82,33 @@ public class VarGameEnd extends AppCompatActivity {
     }
 
     public void restart(View view) {
-        // Create an Intent object to launch StartGame Activity
         Intent intent = new Intent(VarGameEnd.this, VarGameStart.class);
         startActivity(intent);
-        // Finish GameOver Activity
         finish();
     }
 
     public void exit(View view) {
-        // Define what should happen when the exit button is clicked
-        // For example, you can navigate to another activity or close the app
         Intent intent = new Intent(VarGameEnd.this, MainActivity.class);
         startActivity(intent);
-        finish(); // Optional: Close the current activity
+        finish();
     }
 
-    private void updateData(boolean trophyLanguages){
-        GlobalVariables globalVariables = (GlobalVariables) getApplicationContext();
-        HashMap trophy = new HashMap();
+    private void updateData(boolean trophyLanguages) {
+        String userName = globalVariables.getUserName();
+
+        if (userName == null || userName.isEmpty()) {
+            Toast.makeText(this, "Erro: Nome de usuário não encontrado.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        HashMap<String, Object> trophy = new HashMap<>();
         trophy.put("trophyVariables", trophyLanguages);
-        DatabaseReference databaseReference;
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        databaseReference.child(globalVariables.getUserName()).updateChildren(trophy).addOnCompleteListener(new OnCompleteListener() {
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference.child(userName).updateChildren(trophy).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task task) {
-                if (task.isSuccessful()){
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
                     Toast.makeText(VarGameEnd.this, "Parabéns!!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(VarGameEnd.this, "Erro", Toast.LENGTH_SHORT).show();

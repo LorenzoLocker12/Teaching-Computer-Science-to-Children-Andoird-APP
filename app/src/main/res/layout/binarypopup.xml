@@ -30,7 +30,7 @@
             android:id="@+id/descricao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Neste jogo será necessário escrever o número que aparece em binário na caixinha de baixo dele!"
+            android:text="Neste jogo será necessário escrever o número que aparece em decimal para binário na caixinha de baixo dele!"
             android:textSize="25dp"
             android:gravity="center_horizontal"
             android:paddingBottom="16dp" />

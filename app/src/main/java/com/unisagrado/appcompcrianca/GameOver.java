@@ -22,23 +22,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 
 public class GameOver extends AppCompatActivity {
-    TextView tvPoints, tvPersonalBest, textoFim;
 
-    SharedPreferences sharedPreferences;
-
-    ImageView overimg;
-
-    ImageButton exit, retry;
-
-    Button trofeuBtn;
-
-
+    private TextView tvPoints, tvPersonalBest, textoFim;
+    private SharedPreferences sharedPreferences;
+    private ImageView overimg;
+    private ImageButton exit, retry;
+    private Button trofeuBtn;
+    private GlobalVariables globalVariables;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_over);
-        int points = getIntent().getExtras().getInt("pontos");
+
+        // Initialize GlobalVariables
+        globalVariables = (GlobalVariables) getApplicationContext();
+
+        // Initialize UI elements
         tvPoints = findViewById(R.id.tvPoints);
         textoFim = findViewById(R.id.textofim);
         tvPersonalBest = findViewById(R.id.tvPersonalBest);
@@ -46,37 +46,38 @@ public class GameOver extends AppCompatActivity {
         exit = findViewById(R.id.exit);
         retry = findViewById(R.id.retry);
         trofeuBtn = findViewById(R.id.trofeusBtn);
-        boolean trophyLanguages;
 
-        GlobalVariables globalVariables = (GlobalVariables) getApplicationContext();
+        int points = getIntent().getExtras().getInt("pontos");
+        tvPoints.setText(String.valueOf(points));
 
         exit.setVisibility(View.VISIBLE);
         retry.setVisibility(View.VISIBLE);
 
-        tvPoints.setText("" + points);
+        // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences("pref", 0);
-
         int pointsSP = sharedPreferences.getInt("pointsSP", 0);
 
+        // Update personal best if current points are greater
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        if(points > pointsSP){
+        if (points > pointsSP) {
             pointsSP = points;
             editor.putInt("pointsSP", pointsSP);
-            editor.commit();
+            editor.apply();
         }
-        tvPersonalBest.setText("" + pointsSP);
+        tvPersonalBest.setText(String.valueOf(pointsSP));
 
-        if(points == 8){
+        boolean trophyLanguages;
+
+        if (points == 8) {
             overimg.setImageResource(R.drawable.trophy);
             textoFim.setText("Parabéns, você acertou tudo!");
             exit.setVisibility(View.INVISIBLE);
             retry.setVisibility(View.INVISIBLE);
             trofeuBtn.setVisibility(View.VISIBLE);
             trophyLanguages = true;
+            globalVariables.settLing(true);
             updateData(trophyLanguages);
-
-        }
-        else{
+        } else {
             overimg.setImageResource(R.drawable.game_over);
             textoFim.setText("Tente novamente!");
         }
@@ -99,31 +100,34 @@ public class GameOver extends AppCompatActivity {
     }
 
     public void restart(View view) {
-        // Create an Intent object to launch StartGame Activity
         Intent intent = new Intent(GameOver.this, StartGame.class);
         startActivity(intent);
-        // Finish GameOver Activity
         finish();
     }
 
     public void exit(View view) {
-        // Define what should happen when the exit button is clicked
-        // For example, you can navigate to another activity or close the app
         Intent intent = new Intent(GameOver.this, MainActivity.class);
         startActivity(intent);
-        finish(); // Optional: Close the current activity
+        finish();
     }
 
-    private void updateData(boolean trophyLanguages){
-        GlobalVariables globalVariables = (GlobalVariables) getApplicationContext();
-        HashMap trophy = new HashMap();
+    private void updateData(boolean trophyLanguages) {
+        String userName = globalVariables.getUserName();
+
+        // Check if userName is null or empty
+        if (userName == null || userName.isEmpty()) {
+            Toast.makeText(this, "Erro: Nome de usuário não encontrado.", Toast.LENGTH_SHORT).show();
+            return; // Stop further execution if userName is null or empty
+        }
+
+        HashMap<String, Object> trophy = new HashMap<>();
         trophy.put("trophyLanguages", trophyLanguages);
-        DatabaseReference databaseReference;
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        databaseReference.child(globalVariables.getUserName()).updateChildren(trophy).addOnCompleteListener(new OnCompleteListener() {
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference.child(userName).updateChildren(trophy).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task task) {
-                if (task.isSuccessful()){
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
                     Toast.makeText(GameOver.this, "Parabéns!!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(GameOver.this, "Erro", Toast.LENGTH_SHORT).show();
@@ -132,5 +136,3 @@ public class GameOver extends AppCompatActivity {
         });
     }
 }
-
-
