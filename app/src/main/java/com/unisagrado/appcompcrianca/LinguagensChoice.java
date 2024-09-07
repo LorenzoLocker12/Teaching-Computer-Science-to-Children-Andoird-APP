@@ -25,6 +25,14 @@ public class LinguagensChoice extends AppCompatActivity {
             }
         });
 
+        aprenderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LinguagensChoice.this, LingVideo.class);
+                startActivity(i);
+            }
+        });
+
 
     }
 }

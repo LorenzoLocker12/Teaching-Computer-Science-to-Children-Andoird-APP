@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button btnNavigate = findViewById(R.id.btnJogar);
         Button btnTrophy = findViewById(R.id.btnTrofeus);
+        Button btnCreditos = findViewById(R.id.btnCreditos);
         btnTrophy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -31,11 +32,19 @@ public class MainActivity extends AppCompatActivity {
         btnNavigate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Handle button click, navigate to SecondActivity
                 Intent intent = new Intent(MainActivity.this, opcoes.class);
                 startActivity(intent);
             }
         });
+
+        btnCreditos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Creditos.class);
+                startActivity(intent);
+            }
+        });
+
 
 
     }
